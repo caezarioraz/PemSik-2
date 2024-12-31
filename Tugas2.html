@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-[#795757] text-gray-800">
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-[#795757] p-5 flex justify-between items-center text-white shadow-md">
+            <h1 class="text-xl">Admin Panel</h1>
+            <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Log Out</button>
+        </header>
+
+        <div class="flex flex-1">
+            <aside class="bg-[#795757] text-white w-64 p-5 shadow-lg">
+                <nav>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-lg hover:underline">Dashboard</a></li>
+                        <li><a href="#" class="text-lg hover:underline">Mahasiswa</a></li>
+                        <li><a href="#" class="text-lg hover:underline">Settings</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <div class="flex-1 bg-white p-5 shadow-lg">
+                <h2 class="text-2xl mb-5">Daftar Mahasiswa</h2>
+                <button id="btnAdd" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded mb-5">Tambah Mahasiswa</button>
+
+                <table class="w-full border-collapse mb-5">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 p-3 text-left bg-gray-100">No.</th>
+                            <th class="border border-gray-300 p-3 text-left bg-gray-100">NIM</th>
+                            <th class="border border-gray-300 p-3 text-left bg-gray-100">Nama</th>
+                            <th class="border border-gray-300 p-3 text-left bg-gray-100">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mahasiswaList">
+                        <tr class="hover:bg-gray-100">
+                            <td class="border border-gray-300 p-3">1.</td>
+                            <td class="border border-gray-300 p-3">A11.1980.12345</td>
+                            <td class="border border-gray-300 p-3">Vinsen</td>
+                            <td class="border border-gray-300 p-3 space-x-2">
+                                <button onclick="editMahasiswa()" class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded">Edit</button>
+                                <button onclick="confirmDelete()" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded">Hapus</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-100">
+                            <td class="border border-gray-300 p-3">2.</td>
+                            <td class="border border-gray-300 p-3">A11.1980.12346</td>
+                            <td class="border border-gray-300 p-3">Budi</td>
+                            <td class="border border-gray-300 p-3 space-x-2">
+                                <button onclick="editMahasiswa()" class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded">Edit</button>
+                                <button onclick="confirmDelete()" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded">Hapus</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="bg-[#FFF0D1] p-5 text-center text-gray-800 shadow-md">
+            &copy; 2020 Sprei Gratis WOK
+        </footer>
+    </div>
+
+    <!-- Modal Tambah Mahasiswa -->
+    <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 hidden">
+        <div class="bg-white mx-auto mt-40 p-5 w-96 rounded shadow-lg">
+            <span class="text-gray-400 text-2xl float-right cursor-pointer" onclick="closeModal('addModal')">&times;</span>
+            <h2 class="text-xl mb-4">Tambah Mahasiswa</h2>
+            <form id="addForm">
+                <label for="nim" class="block mb-2">NIM:</label>
+                <input type="text" id="nim" name="nim" class="border border-gray-300 p-2 w-full mb-4">
+
+                <label for="nama" class="block mb-2">Nama:</label>
+                <input type="text" id="nama" name="nama" class="border border-gray-300 p-2 w-full mb-4">
+            </form>
+            <div class="text-right space-x-2">
+                <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" onclick="closeModal('addModal')">Cancel</button>
+                <button class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded" onclick="saveMahasiswa()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Mahasiswa -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden">
+        <div class="bg-white mx-auto mt-40 p-5 w-96 rounded shadow-lg">
+            <span class="text-gray-400 text-2xl float-right cursor-pointer" onclick="closeModal('editModal')">&times;</span>
+            <h2 class="text-xl mb-4">Edit Mahasiswa</h2>
+            <form id="editForm">
+                <label for="editNim" class="block mb-2">NIM:</label>
+                <input type="text" id="editNim" name="editNim" class="border border-gray-300 p-2 w-full mb-4">
+
+                <label for="editNama" class="block mb-2">Nama:</label>
+                <input type="text" id="editNama" name="editNama" class="border border-gray-300 p-2 w-full mb-4">
+            </form>
+            <div class="text-right space-x-2">
+                <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" onclick="closeModal('editModal')">Cancel</button>
+                <button class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded" onclick="saveEdit()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Konfirmasi Hapus -->
+    <div id="deletePopup" class="fixed inset-0 bg-black bg-opacity-50 hidden">
+        <div class="bg-white mx-auto mt-40 p-5 w-96 rounded shadow-lg">
+            <span class="text-gray-400 text-2xl float-right cursor-pointer" onclick="closeModal('deletePopup')">&times;</span>
+            <h2 class="text-xl mb-4">Konfirmasi Hapus</h2>
+            <p>Apakah Anda yakin ingin menghapus data ini?</p>
+            <div class="text-right space-x-2">
+                <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" onclick="closeModal('deletePopup')">Cancel</button>
+                <button class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded" onclick="deleteMahasiswa()">Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove("hidden");
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add("hidden");
+        }
+        // Tambah Mahasiswa
+        document.getElementById("btnAdd").onclick = function () {
+            openModal('addModal');
+        };
+        function saveMahasiswa() {
+            closeModal('addModal');
+        }
+        // Edit Mahasiswa
+        function editMahasiswa() {
+            openModal('editModal');
+        }
+        function saveEdit() {
+            closeModal('editModal');
+        }
+        // Hapus Mahasiswa
+        function confirmDelete() {
+            openModal('deletePopup');
+        }
+        function deleteMahasiswa() {
+            closeModal('deletePopup');
+        }
+    </script>
+</body>
+
+</html>
